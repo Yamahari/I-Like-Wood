@@ -1,5 +1,16 @@
 {
-
+  "block.ilikewood.oak_panels_stairs": "Schody z dębowej boazerii",
+  "block.ilikewood.dark_oak_panels_stairs": "Schody z ciemnodębowej boazerii",
+  "block.ilikewood.spruce_panels_stairs": "Schody z świerkowej boazerii",
+  "block.ilikewood.birch_panels_stairs": "Schody z brzozowej boazerii",
+  "block.ilikewood.jungle_panels_stairs": "Schody z tropikalnej boazerii",
+  "block.ilikewood.acacia_panels_stairs": "Schody z akacjowej boazerii",
+  "block.ilikewood.oak_panels_slab": "Płyta z dębowej boazerii",
+  "block.ilikewood.dark_oak_panels_slab": "Płyta z ciemnodębowej boazerii",
+  "block.ilikewood.spruce_panels_slab": "Płyta z świerkowej boazerii",
+  "block.ilikewood.birch_panels_slab": "Płyta z brzozowej boazerii",
+  "block.ilikewood.jungle_panels_slab": "Płyta z tropikalnej boazerii",
+  "block.ilikewood.acacia_panels_slab": "Płyta z akacjowej boazerii",
   "block.ilikewood.oak_post": "Słupek dębowy",
   "block.ilikewood.dark_oak_post": "Słupek ciemnodębowy",
   "block.ilikewood.spruce_post": "Słupek świerkowy",
