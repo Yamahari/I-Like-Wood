@@ -48,7 +48,6 @@ public class ILikeWoodLootTableProvider implements IDataProvider {
             ILikeWood.logger.error("Failed to validate loot tables, see logs");
         } else {
             map.forEach((resourceLocation, lootTable) -> {
-                ILikeWood.logger.info(resourceLocation.toString());
                 try {
                     IDataProvider.save(GSON, cache, LootTableManager.toJson(lootTable), path.resolve("data/" + resourceLocation.getNamespace() + "/loot_tables/" + resourceLocation.getPath() + ".json"));
                 } catch (IOException ioexception) {

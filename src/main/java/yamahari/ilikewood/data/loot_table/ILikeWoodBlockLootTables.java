@@ -18,10 +18,24 @@ import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.conditions.*;
 import net.minecraft.world.storage.loot.functions.*;
 import yamahari.ilikewood.ILikeWood;
+import yamahari.ilikewood.objectholders.barrel.WoodenBarrelBlocks;
+import yamahari.ilikewood.objectholders.bookshelf.WoodenBookshelfBlocks;
+import yamahari.ilikewood.objectholders.chest.WoodenChestBlocks;
+import yamahari.ilikewood.objectholders.composter.WoodenComposterBlocks;
+import yamahari.ilikewood.objectholders.crafting_table.WoodenCraftingTableBlocks;
+import yamahari.ilikewood.objectholders.ladder.WoodenLadderBlocks;
+import yamahari.ilikewood.objectholders.lectern.WoodenLecternBlocks;
+import yamahari.ilikewood.objectholders.log_pile.WoodenLogPileBlocks;
 import yamahari.ilikewood.objectholders.panels.WoodenPanelsBlocks;
+import yamahari.ilikewood.objectholders.panels.slab.WoodenPanelsSlabBlocks;
+import yamahari.ilikewood.objectholders.panels.stairs.WoodenPanelsStairsBlocks;
+import yamahari.ilikewood.objectholders.post.WoodenPostBlocks;
+import yamahari.ilikewood.objectholders.scaffolding.WoodenScaffoldingBlocks;
+import yamahari.ilikewood.objectholders.torch.WoodenTorchBlocks;
+import yamahari.ilikewood.objectholders.wall.WoodenWallBlocks;
 
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -47,12 +61,12 @@ public class ILikeWoodBlockLootTables implements Consumer<BiConsumer<ResourceLoc
         return !field_218578_f.contains(itemProvider.asItem()) ? lootConditionConsumer.acceptCondition(SurvivesExplosion.builder()) : lootConditionConsumer.cast();
     }
 
-    private static LootTable.Builder func_218546_a(IItemProvider itemProvider) {
+    private static LootTable.Builder dropItemProvider(IItemProvider itemProvider) {
         return LootTable.builder().addLootPool(func_218560_a(itemProvider, LootPool.builder().name(itemProvider.asItem().toString()).rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(itemProvider))));
     }
 
     private static LootTable.Builder func_218494_a(Block block, ILootCondition.IBuilder lootConditionBuilder, LootEntry.Builder<?> lootEntryBuilder) {
-        return LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(block).acceptCondition(lootConditionBuilder).func_216080_a(lootEntryBuilder)));
+        return LootTable.builder().addLootPool(LootPool.builder().name(block.getRegistryName().getPath()).rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(block).acceptCondition(lootConditionBuilder).func_216080_a(lootEntryBuilder)));
     }
 
     private static LootTable.Builder func_218519_a(Block block, LootEntry.Builder<?> builder) {
@@ -88,15 +102,15 @@ public class ILikeWoodBlockLootTables implements Consumer<BiConsumer<ResourceLoc
     }
 
     private static LootTable.Builder func_218513_d(Block block) {
-        return LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(func_218552_a(block, ItemLootEntry.builder(block).acceptFunction(SetCount.func_215932_a(ConstantRange.of(2)).acceptCondition(BlockStateProperty.builder(block).with(SlabBlock.TYPE, SlabType.DOUBLE))))));
+        return LootTable.builder().addLootPool(LootPool.builder().name(block.getRegistryName().getPath()).rolls(ConstantRange.of(1)).addEntry(func_218552_a(block, ItemLootEntry.builder(block).acceptFunction(SetCount.func_215932_a(ConstantRange.of(2)).acceptCondition(BlockStateProperty.builder(block).with(SlabBlock.TYPE, SlabType.DOUBLE))))));
     }
 
     private static <T extends Comparable<T>> LootTable.Builder func_218562_a(Block block, IProperty<T> property, T value) {
         return LootTable.builder().addLootPool(func_218560_a(block, LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(block).acceptCondition(BlockStateProperty.builder(block).with(property, value)))));
     }
 
-    private static LootTable.Builder func_218481_e(Block block) {
-        return LootTable.builder().addLootPool(func_218560_a(block, LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(block).acceptFunction(CopyName.func_215893_a(CopyName.Source.BLOCK_ENTITY)))));
+    private static LootTable.Builder dropBlockAndCopyBlockEntityName(Block block) {
+        return LootTable.builder().addLootPool(func_218560_a(block, LootPool.builder().name(block.getRegistryName().getPath()).rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(block).acceptFunction(CopyName.func_215893_a(CopyName.Source.BLOCK_ENTITY)))));
     }
 
     private static LootTable.Builder func_218544_f(Block block) {
@@ -143,28 +157,79 @@ public class ILikeWoodBlockLootTables implements Consumer<BiConsumer<ResourceLoc
         return LootTable.builder();
     }
 
+    private static Block getLootFrom(String name, Class<?> objectHolder) {
+        try {
+            final Field field = objectHolder.getDeclaredField(name);
+            return (Block) field.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            ILikeWood.logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @SuppressWarnings("ConstantConditions")
     public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-        this.func_218492_c(WoodenPanelsBlocks.ACACIA);
-        this.func_218492_c(WoodenPanelsBlocks.BIRCH);
-        this.func_218492_c(WoodenPanelsBlocks.DARK_OAK);
-        this.func_218492_c(WoodenPanelsBlocks.JUNGLE);
-        this.func_218492_c(WoodenPanelsBlocks.OAK);
-        this.func_218492_c(WoodenPanelsBlocks.SPRUCE);
+        List<Block> blocks = new LinkedList<>();
+
+        Stream.of(WoodenBookshelfBlocks.ACACIA, WoodenBookshelfBlocks.BIRCH, WoodenBookshelfBlocks.DARK_OAK, WoodenBookshelfBlocks.JUNGLE, WoodenBookshelfBlocks.OAK, WoodenBookshelfBlocks.SPRUCE)
+                .forEach(woodenBookshelfBlock -> {
+                    blocks.add(woodenBookshelfBlock);
+                    this.registerLootTable(woodenBookshelfBlock, (block) -> func_218530_a(block, Items.BOOK, ConstantRange.of(3)));
+                });
+
+        Stream.of(WoodenPanelsSlabBlocks.ACACIA, WoodenPanelsSlabBlocks.BIRCH, WoodenPanelsSlabBlocks.DARK_OAK, WoodenPanelsSlabBlocks.JUNGLE, WoodenPanelsSlabBlocks.OAK, WoodenPanelsSlabBlocks.SPRUCE)
+                .forEach(woodenPanelsSlabBlock -> {
+                    blocks.add(woodenPanelsSlabBlock);
+                    this.registerLootTable(woodenPanelsSlabBlock, ILikeWoodBlockLootTables::func_218513_d);
+                });
+
+        // TODO this doesn't work, saves under torch not wall_torch
+        /*Stream.of(WoodenWallTorchBlocks.ACACIA, WoodenWallTorchBlocks.BIRCH, WoodenWallTorchBlocks.DARK_OAK, WoodenWallTorchBlocks.JUNGLE, WoodenWallTorchBlocks.OAK, WoodenWallTorchBlocks.SPRUCE)
+                .forEach(woodenWallTorchBlock -> {
+                    blocks.add(woodenWallTorchBlock);
+                    this.dropItself(getLootFrom(woodenWallTorchBlock.getWoodType().getName().toUpperCase(), WoodenTorchBlocks.class));
+                });*/
+
+        Stream.of(WoodenComposterBlocks.class, WoodenCraftingTableBlocks.class, WoodenLadderBlocks.class, WoodenLogPileBlocks.class, WoodenPanelsBlocks.class, WoodenPanelsStairsBlocks.class, WoodenPostBlocks.class, WoodenScaffoldingBlocks.class, WoodenTorchBlocks.class, WoodenWallBlocks.class).forEach(
+                blockClass -> Arrays.stream(blockClass.getDeclaredFields())
+                        .forEach(field -> {
+                            try {
+                                Block block = (Block) field.get(null);
+                                blocks.add(block);
+                                this.dropItself(block);
+                            } catch (ClassCastException | IllegalAccessException e) {
+                                ILikeWood.logger.error(e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }));
+
+        Stream.of(WoodenBarrelBlocks.class, WoodenChestBlocks.class, WoodenLecternBlocks.class).forEach(
+                blockClass -> Arrays.stream(blockClass.getDeclaredFields())
+                        .forEach(field -> {
+                            try {
+                                Block block = (Block) field.get(null);
+                                blocks.add(block);
+                                this.registerLootTable(block, ILikeWoodBlockLootTables::dropBlockAndCopyBlockEntityName);
+                            } catch (ClassCastException | IllegalAccessException e) {
+                                ILikeWood.logger.error(e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }));
 
         Set<ResourceLocation> set = Sets.newHashSet();
 
-        Stream.of(WoodenPanelsBlocks.ACACIA, WoodenPanelsBlocks.BIRCH, WoodenPanelsBlocks.DARK_OAK, WoodenPanelsBlocks.JUNGLE, WoodenPanelsBlocks.OAK, WoodenPanelsBlocks.SPRUCE)
-                .forEach(block -> {
-                    ResourceLocation resourceLocation = block.getLootTable();
-                    if (resourceLocation != LootTables.EMPTY && set.add(resourceLocation)) {
-                        LootTable.Builder builder = this.field_218581_i.remove(resourceLocation);
-                        if (builder == null) {
-                            ILikeWood.logger.error(String.format("Missing loot_table '%s' for '%s'", resourceLocation, block.getRegistryName()));
-                        } else {
-                            consumer.accept(resourceLocation, builder);
-                        }
-                    }
-                });
+        blocks.stream().forEach(block -> {
+            ResourceLocation resourceLocation = block.getLootTable();
+            if (resourceLocation != LootTables.EMPTY && set.add(resourceLocation)) {
+                LootTable.Builder builder = this.field_218581_i.remove(resourceLocation);
+                if (builder == null) {
+                    ILikeWood.logger.error(String.format("Missing loot_table '%s' for '%s'", resourceLocation, block.getRegistryName()));
+                } else {
+                    consumer.accept(resourceLocation, builder);
+                }
+            }
+        });
     }
 
     public void func_218547_a(Block block) {
@@ -176,14 +241,14 @@ public class ILikeWoodBlockLootTables implements Consumer<BiConsumer<ResourceLoc
     }
 
     public void func_218493_a(Block block, IItemProvider itemProvider) {
-        this.registerLootTable(block, func_218546_a(itemProvider));
+        this.registerLootTable(block, dropItemProvider(itemProvider));
     }
 
     public void func_218466_b(Block block) {
         this.func_218564_a(block, block);
     }
 
-    public void func_218492_c(Block block) {
+    public void dropItself(Block block) {
         this.func_218493_a(block, block);
     }
 
