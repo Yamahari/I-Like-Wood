@@ -13,6 +13,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.*;
 import yamahari.ilikewood.ILikeWood;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -24,17 +26,18 @@ import java.util.function.Supplier;
 public class ILikeWoodLootTableProvider implements IDataProvider {
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private final DataGenerator dataGenerator;
-    private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> field_218444_e = ImmutableList.of(Pair.of(ILikeWoodBlockLootTables::new, LootParameterSets.BLOCK));
+    private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> lootTables = ImmutableList.of(Pair.of(ILikeWoodBlockLootTables::new, LootParameterSets.BLOCK));
 
     public ILikeWoodLootTableProvider(DataGenerator dataGeneratorIn) {
         this.dataGenerator = dataGeneratorIn;
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void act(DirectoryCache cache) {
         Path path = this.dataGenerator.getOutputFolder();
         Map<ResourceLocation, LootTable> map = Maps.newHashMap();
-        this.field_218444_e.forEach((lootParameterSetPair) -> lootParameterSetPair.getFirst().get().accept((resourceLocation, builder) -> {
+        this.lootTables.forEach((lootParameterSetPair) -> lootParameterSetPair.getFirst().get().accept((resourceLocation, builder) -> {
             if (map.put(resourceLocation, builder.setParameterSet(lootParameterSetPair.getSecond()).build()) != null) {
                 ILikeWood.logger.error("Duplicate loot table " + resourceLocation);
             }
@@ -59,6 +62,7 @@ public class ILikeWoodLootTableProvider implements IDataProvider {
     }
 
     @Override
+    @Nonnull
     public String getName() {
         return "ILikeWood - LootTables";
     }

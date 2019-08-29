@@ -103,7 +103,7 @@ public class ILikeWoodBlockLootTables implements Consumer<BiConsumer<ResourceLoc
         return LootTable.builder().addLootPool(survivesExplosion(LootPool.builder().name(Objects.requireNonNull(block.getRegistryName()).getPath()).rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(block).acceptCondition(BlockStateProperty.builder(block).with(BedBlock.PART, BedPart.HEAD)))));
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings({"ConstantConditions", "deprecation"})
     public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
         Stream.of(WoodenBookshelfBlocks.ACACIA, WoodenBookshelfBlocks.BIRCH, WoodenBookshelfBlocks.DARK_OAK, WoodenBookshelfBlocks.JUNGLE, WoodenBookshelfBlocks.OAK, WoodenBookshelfBlocks.SPRUCE)
                 .forEach(woodenBookshelfBlock -> this.registerLootTable(woodenBookshelfBlock, (block) -> dropBooks(block, ConstantRange.of(3))));

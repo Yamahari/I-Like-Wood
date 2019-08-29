@@ -33,7 +33,8 @@ import yamahari.ilikewood.container.WoodenLecternContainer;
 import yamahari.ilikewood.container.WoodenWorkbenchContainer;
 import yamahari.ilikewood.data.loot_table.ILikeWoodLootTableProvider;
 import yamahari.ilikewood.data.recipe.ILikeWoodRecipeProvider;
-import yamahari.ilikewood.data.recipe.WoodenRepairItemRecipe;
+import yamahari.ilikewood.data.recipe.WoodenDyeBedRecipe;
+import yamahari.ilikewood.data.recipe.WoodenRepairTieredItem;
 import yamahari.ilikewood.items.*;
 import yamahari.ilikewood.items.tier.WoodenHoeItem;
 import yamahari.ilikewood.items.tier.WoodenSwordItem;
@@ -324,8 +325,9 @@ public class ILikeWood {
 
         @SubscribeEvent
         public static void onRegisterRecipeSerializer(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
-            event.getRegistry().register(
-                    new SpecialRecipeSerializer<>(WoodenRepairItemRecipe::new).setRegistryName("wooden_repair_item")
+            event.getRegistry().registerAll(
+                    new SpecialRecipeSerializer<>(WoodenRepairTieredItem::new).setRegistryName("wooden_repair_tiered_item"),
+                    new SpecialRecipeSerializer<>(WoodenDyeBedRecipe::new).setRegistryName("wooden_dye_bed")
             );
         }
 

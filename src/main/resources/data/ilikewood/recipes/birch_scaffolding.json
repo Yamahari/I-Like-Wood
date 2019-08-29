@@ -6,15 +6,14 @@
     "I I"
   ],
   "key": {
-    "~": {
-      "item": "minecraft:string"
-    },
     "I": {
       "item": "ilikewood:birch_stick"
+    },
+    "~": {
+      "item": "minecraft:string"
     }
   },
   "result": {
-    "item": "ilikewood:birch_scaffolding",
-    "count": 6
+    "item": "ilikewood:birch_scaffolding"
   }
 }

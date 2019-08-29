@@ -7,7 +7,7 @@
   ],
   "key": {
     "S": {
-      "item": "minecraft:spruce_slab"
+      "item": "ilikewood:spruce_panels_slab"
     },
     "B": {
       "item": "ilikewood:spruce_bookshelf"

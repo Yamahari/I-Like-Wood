@@ -1,17 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "# #",
-    "###",
-    "# #"
+    "I I",
+    "III",
+    "I I"
   ],
   "key": {
-    "#": {
+    "I": {
       "item": "ilikewood:spruce_stick"
     }
   },
   "result": {
-    "item": "ilikewood:spruce_ladder",
-    "count": 3
+    "item": "ilikewood:spruce_ladder"
   }
 }

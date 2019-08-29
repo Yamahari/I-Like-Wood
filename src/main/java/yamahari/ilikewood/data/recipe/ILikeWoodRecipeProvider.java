@@ -95,9 +95,9 @@ public class ILikeWoodRecipeProvider extends RecipeProvider {
     @ParametersAreNonnullByDefault
     @SuppressWarnings("ConstantConditions")
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        //TODO colored beds from white beds
-
-        CustomRecipeBuilder.func_218656_a(WoodenRecipeSerializers.REPAIR_ITEM).build(consumer, Constants.MOD_ID + ":repair_tiered_item");
+        // TODO smelting iron/gold tools
+        CustomRecipeBuilder.func_218656_a(WoodenRecipeSerializers.REPAIR_TIERED_ITEM).build(consumer, Constants.MOD_ID + ":repair_tiered_item");
+        CustomRecipeBuilder.func_218656_a(WoodenRecipeSerializers.DYE_BED).build(consumer, Constants.MOD_ID + ":dye_bed");
 
         Stream.of(WoodenBarrelBlocks.ACACIA, WoodenBarrelBlocks.BIRCH, WoodenBarrelBlocks.DARK_OAK, WoodenBarrelBlocks.JUNGLE, WoodenBarrelBlocks.OAK, WoodenBarrelBlocks.SPRUCE)
                 .forEach(block -> {

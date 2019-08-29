@@ -13,8 +13,8 @@ import yamahari.ilikewood.objectholders.WoodenRecipeSerializers;
 
 import java.util.List;
 
-public class WoodenRepairItemRecipe extends SpecialRecipe {
-    public WoodenRepairItemRecipe(ResourceLocation resourceLocation) {
+public class WoodenRepairTieredItem extends SpecialRecipe {
+    public WoodenRepairTieredItem(ResourceLocation resourceLocation) {
         super(resourceLocation);
     }
 
@@ -99,6 +99,6 @@ public class WoodenRepairItemRecipe extends SpecialRecipe {
     @SuppressWarnings("NullableProblems")
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return WoodenRecipeSerializers.REPAIR_ITEM;
+        return WoodenRecipeSerializers.REPAIR_TIERED_ITEM;
     }
 }

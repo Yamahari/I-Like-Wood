@@ -7,7 +7,7 @@
   ],
   "key": {
     "S": {
-      "item": "minecraft:oak_slab"
+      "item": "ilikewood:oak_panels_slab"
     },
     "B": {
       "item": "ilikewood:oak_bookshelf"

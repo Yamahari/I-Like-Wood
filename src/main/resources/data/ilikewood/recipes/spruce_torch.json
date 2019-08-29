@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "X",
-    "#"
+    "#",
+    "I"
   ],
   "key": {
-    "#": {
-      "item": "ilikewood:spruce_stick"
-    },
-    "X": [
+    "#": [
       {
         "item": "minecraft:coal"
       },
       {
         "item": "minecraft:charcoal"
       }
-    ]
+    ],
+    "I": {
+      "item": "ilikewood:spruce_stick"
+    }
   },
   "result": {
     "item": "ilikewood:spruce_torch",
