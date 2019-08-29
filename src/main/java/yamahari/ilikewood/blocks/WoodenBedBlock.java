@@ -15,11 +15,17 @@ import javax.annotation.Nullable;
 
 public class WoodenBedBlock extends BedBlock implements IWooden {
     private final WoodType woodType;
+    private final DyeColor dyeColor;
 
     public WoodenBedBlock(WoodType woodType, DyeColor dyeColor) {
         super(dyeColor, Block.Properties.create(Material.WOOL).sound(SoundType.WOOD).hardnessAndResistance(0.2f));
         this.woodType = woodType;
-        this.setRegistryName(this.getWoodType().getModId(), dyeColor.getName() + "_" + this.getWoodType().getName() + "_" + WoodenObjectType.BED.getName());
+        this.dyeColor = dyeColor;
+        this.setRegistryName(this.getWoodType().getModId(), this.getDyeColor().getName() + "_" + this.getWoodType().getName() + "_" + WoodenObjectType.BED.getName());
+    }
+
+    public DyeColor getDyeColor() {
+        return this.dyeColor;
     }
 
     @Override

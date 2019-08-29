@@ -2,9 +2,7 @@ package yamahari.ilikewood.blocks.torch;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.WallTorchBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -20,8 +18,8 @@ import java.util.Random;
 public class WoodenWallTorchBlock extends WallTorchBlock implements IWooden {
     private final WoodType woodType;
 
-    public WoodenWallTorchBlock(WoodType woodType) {
-        super(Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(0.f).lightValue(14).sound(SoundType.WOOD));
+    public WoodenWallTorchBlock(WoodType woodType, Block.Properties properties) {
+        super(properties);
         this.woodType = woodType;
         this.setRegistryName(this.getWoodType().getModId(), this.getWoodType().getName() + "_wall_" + WoodenObjectType.TORCH.getName());
     }

@@ -1,21 +1,14 @@
 package yamahari.ilikewood.data.recipe;
 
-import net.minecraft.advancements.criterion.EnterBlockTrigger;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.MinMaxBounds;
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.data.ShapedRecipeBuilder;
+import net.minecraft.data.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import yamahari.ilikewood.ILikeWood;
 import yamahari.ilikewood.blocks.WoodenBedBlock;
@@ -24,6 +17,7 @@ import yamahari.ilikewood.items.tier.WoodenSwordItem;
 import yamahari.ilikewood.items.tier.tool.WoodenAxeItem;
 import yamahari.ilikewood.items.tier.tool.WoodenPickaxeItem;
 import yamahari.ilikewood.items.tier.tool.WoodenShovelItem;
+import yamahari.ilikewood.objectholders.WoodenRecipeSerializers;
 import yamahari.ilikewood.objectholders.barrel.WoodenBarrelBlocks;
 import yamahari.ilikewood.objectholders.bed.black.WoodenBlackBedBlocks;
 import yamahari.ilikewood.objectholders.bed.blue.WoodenBlueBedBlocks;
@@ -61,6 +55,7 @@ import yamahari.ilikewood.objectholders.tiered.tools.WoodenPickaxeItems;
 import yamahari.ilikewood.objectholders.tiered.tools.WoodenShovelItems;
 import yamahari.ilikewood.objectholders.torch.WoodenTorchBlocks;
 import yamahari.ilikewood.objectholders.wall.WoodenWallBlocks;
+import yamahari.ilikewood.util.Constants;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.lang.reflect.Field;
@@ -84,32 +79,8 @@ public class ILikeWoodRecipeProvider extends RecipeProvider {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
-    private static Tag<Item> getIngredientTag(String name, Class<?> objectHolder) {
-        try {
-            Field tag = objectHolder.getDeclaredField(name);
-            return (Tag<Item>) tag.get(null);
-        } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
-            ILikeWood.logger.error(e.getMessage());
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private EnterBlockTrigger.Instance enteredBlock(Block blockIn) {
-        return new EnterBlockTrigger.Instance(blockIn, null);
-    }
-
-    private InventoryChangeTrigger.Instance hasItem(MinMaxBounds.IntBound amount, IItemProvider itemIn) {
-        return this.hasItem(ItemPredicate.Builder.create().item(itemIn).count(amount).build());
-    }
-
     private InventoryChangeTrigger.Instance hasItem(IItemProvider itemIn) {
         return this.hasItem(ItemPredicate.Builder.create().item(itemIn).build());
-    }
-
-    private InventoryChangeTrigger.Instance hasItem(Tag<Item> tagIn) {
-        return this.hasItem(ItemPredicate.Builder.create().tag(tagIn).build());
     }
 
     private InventoryChangeTrigger.Instance hasItem(Ingredient ingredientIn) {
@@ -124,6 +95,10 @@ public class ILikeWoodRecipeProvider extends RecipeProvider {
     @ParametersAreNonnullByDefault
     @SuppressWarnings("ConstantConditions")
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
+        //TODO colored beds from white beds
+
+        CustomRecipeBuilder.func_218656_a(WoodenRecipeSerializers.REPAIR_ITEM).build(consumer, Constants.MOD_ID + ":repair_tiered_item");
+
         Stream.of(WoodenBarrelBlocks.ACACIA, WoodenBarrelBlocks.BIRCH, WoodenBarrelBlocks.DARK_OAK, WoodenBarrelBlocks.JUNGLE, WoodenBarrelBlocks.OAK, WoodenBarrelBlocks.SPRUCE)
                 .forEach(block -> {
                     final IItemProvider ingredient = getIngredient(block.getWoodType().getName().toUpperCase(), WoodenPanelsBlocks.class);
@@ -160,10 +135,9 @@ public class ILikeWoodRecipeProvider extends RecipeProvider {
                     ShapedRecipeBuilder.shapedRecipe(block).key('I', ingredient).key('~', Items.STRING).patternLine("I~I").patternLine("I I").patternLine("I I").addCriterion("has_stick", this.hasItem(ingredient)).build(consumer);
                 });
 
-        // TODO FIX EMPTY TAG
         Stream.of(WoodenWallBlocks.ACACIA, WoodenWallBlocks.BIRCH, WoodenWallBlocks.DARK_OAK, WoodenWallBlocks.JUNGLE, WoodenWallBlocks.OAK, WoodenWallBlocks.SPRUCE)
                 .forEach(block -> {
-                    final Tag<Item> ingredient = getIngredientTag(block.getWoodType().getName().toUpperCase() + "_LOGS", ItemTags.class);
+                    final IItemProvider ingredient = getIngredient(block.getWoodType().getName().toUpperCase() + "_LOG", Blocks.class);
                     ShapedRecipeBuilder.shapedRecipe(block, 6).key('#', ingredient).patternLine("###").patternLine("###").addCriterion("has_log", this.hasItem(ingredient)).build(consumer);
                 });
 
@@ -190,7 +164,7 @@ public class ILikeWoodRecipeProvider extends RecipeProvider {
                         .forEach(field -> {
                             try {
                                 final WoodenBedBlock bed = (WoodenBedBlock) field.get(null);
-                                final IItemProvider ingredient = getIngredient(bed.getColor().getName().toUpperCase() + "_WOOL", Items.class);
+                                final IItemProvider ingredient = getIngredient(bed.getDyeColor().getName().toUpperCase() + "_WOOL", Items.class);
                                 ShapedRecipeBuilder.shapedRecipe(bed).key('X', ingredient).key('#', getIngredient(bed.getWoodType().getName().toUpperCase(), WoodenPanelsBlocks.class)).patternLine("XXX").patternLine("###").addCriterion("has_wool", this.hasItem(ingredient)).build(consumer);
                             } catch (IllegalAccessException | ClassCastException e) {
                                 ILikeWood.logger.error(e.getMessage());

@@ -131,8 +131,6 @@ public class ILikeWood {
                                 new WoodenScaffoldingBlock(woodType),
                                 new WoodenStrippedPostBlock(woodType).setRegistryName(String.format(WoodenObjectType.STRIPPED_POST.getName(), woodType.getName())),
                                 new WoodenCraftingTableBlock(woodType),
-                                new WoodenTorchBlock(woodType),
-                                new WoodenWallTorchBlock(woodType),
                                 new WoodenLogPileBlock(woodType)
                         );
                     });
@@ -144,7 +142,21 @@ public class ILikeWood {
             final Block oak_panels = new WoodenBlock(WoodTypes.OAK, Block.Properties.from(Blocks.OAK_PLANKS)).setRegistryName(WoodTypes.OAK.getName() + "_" + WoodenObjectType.PANELS.getName());
             final Block spruce_panels = new WoodenBlock(WoodTypes.SPRUCE, Block.Properties.from(Blocks.SPRUCE_PLANKS)).setRegistryName(WoodTypes.SPRUCE.getName() + "_" + WoodenObjectType.PANELS.getName());
 
+            final Block acacia_torch = new WoodenTorchBlock(WoodTypes.ACACIA);
+            final Block birch_torch = new WoodenTorchBlock(WoodTypes.BIRCH);
+            final Block dark_oak_torch = new WoodenTorchBlock(WoodTypes.DARK_OAK);
+            final Block jungle_torch = new WoodenTorchBlock(WoodTypes.JUNGLE);
+            final Block oak_torch = new WoodenTorchBlock(WoodTypes.OAK);
+            final Block spruce_torch = new WoodenTorchBlock(WoodTypes.SPRUCE);
+            
             blockRegistry.registerAll(
+                    acacia_torch, birch_torch, dark_oak_torch, jungle_torch, oak_torch, spruce_torch,
+                    new WoodenWallTorchBlock(WoodTypes.ACACIA, Block.Properties.from(acacia_torch).lootFrom(acacia_torch)),
+                    new WoodenWallTorchBlock(WoodTypes.BIRCH, Block.Properties.from(birch_torch).lootFrom(birch_torch)),
+                    new WoodenWallTorchBlock(WoodTypes.DARK_OAK, Block.Properties.from(dark_oak_torch).lootFrom(dark_oak_torch)),
+                    new WoodenWallTorchBlock(WoodTypes.JUNGLE, Block.Properties.from(jungle_torch).lootFrom(jungle_torch)),
+                    new WoodenWallTorchBlock(WoodTypes.OAK, Block.Properties.from(oak_torch).lootFrom(oak_torch)),
+                    new WoodenWallTorchBlock(WoodTypes.SPRUCE, Block.Properties.from(spruce_torch).lootFrom(spruce_torch)),
                     new WoodenPostBlock(WoodTypes.ACACIA, () -> WoodenStrippedPostBlocks.ACACIA),
                     new WoodenPostBlock(WoodTypes.BIRCH, () -> WoodenStrippedPostBlocks.BIRCH),
                     new WoodenPostBlock(WoodTypes.DARK_OAK, () -> WoodenStrippedPostBlocks.DARK_OAK),
