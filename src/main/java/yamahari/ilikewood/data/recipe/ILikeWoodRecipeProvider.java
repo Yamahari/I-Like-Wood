@@ -96,6 +96,8 @@ public class ILikeWoodRecipeProvider extends RecipeProvider {
     @SuppressWarnings("ConstantConditions")
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
         // TODO smelting iron/gold tools
+        // TODO post from log pile
+        // TODO planks from panels slabs
         CustomRecipeBuilder.func_218656_a(WoodenRecipeSerializers.REPAIR_TIERED_ITEM).build(consumer, Constants.MOD_ID + ":repair_tiered_item");
         CustomRecipeBuilder.func_218656_a(WoodenRecipeSerializers.DYE_BED).build(consumer, Constants.MOD_ID + ":dye_bed");
 
