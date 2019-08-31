@@ -3,7 +3,7 @@ loaderVersion="[28,)" #mandatory
 issueTrackerURL="https://github.com/Yamahari/I-Like-Wood/issues" #optional
 [[mods]] #mandatory
 modId="ilikewood" #mandatory
-version="1.1.1.0" #mandatory
+version="1.1.2.0" #mandatory
 displayName="I Like Wood" #mandatory
 displayURL="https://www.curseforge.com/minecraft/mc-mods/i-like-wood" #optional
 logoFile="logo.png" #optional
