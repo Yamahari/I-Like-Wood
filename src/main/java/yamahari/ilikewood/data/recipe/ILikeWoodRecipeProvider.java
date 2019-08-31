@@ -1,8 +1,6 @@
 package yamahari.ilikewood.data.recipe;
 
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.*;
 import net.minecraft.item.Item;
@@ -79,25 +77,16 @@ public class ILikeWoodRecipeProvider extends RecipeProvider {
         return null;
     }
 
-    private InventoryChangeTrigger.Instance hasItem(IItemProvider itemIn) {
-        return this.hasItem(ItemPredicate.Builder.create().item(itemIn).build());
-    }
-
     private InventoryChangeTrigger.Instance hasItem(Ingredient ingredientIn) {
         return InventoryChangeTrigger.Instance.forItems(Arrays.stream(ingredientIn.getMatchingStacks()).map(ItemStack::getItem).toArray(Item[]::new));
     }
 
-    private InventoryChangeTrigger.Instance hasItem(ItemPredicate... predicates) {
-        return new InventoryChangeTrigger.Instance(MinMaxBounds.IntBound.UNBOUNDED, MinMaxBounds.IntBound.UNBOUNDED, MinMaxBounds.IntBound.UNBOUNDED, predicates);
-    }
 
     @Override
     @ParametersAreNonnullByDefault
     @SuppressWarnings("ConstantConditions")
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
         // TODO smelting iron/gold tools
-        // TODO post from log pile
-        // TODO planks from panels slabs
         CustomRecipeBuilder.func_218656_a(WoodenRecipeSerializers.REPAIR_TIERED_ITEM).build(consumer, Constants.MOD_ID + ":repair_tiered_item");
         CustomRecipeBuilder.func_218656_a(WoodenRecipeSerializers.DYE_BED).build(consumer, Constants.MOD_ID + ":dye_bed");
 
@@ -159,6 +148,7 @@ public class ILikeWoodRecipeProvider extends RecipeProvider {
                 .forEach(block -> {
                     final IItemProvider ingredient = getIngredient(block.getWoodType().getName().toUpperCase(), WoodenPostBlocks.class);
                     ShapedRecipeBuilder.shapedRecipe(block).key('#', ingredient).patternLine("##").patternLine("##").addCriterion("has_post", this.hasItem(ingredient)).build(consumer);
+                    ShapelessRecipeBuilder.shapelessRecipe(ingredient, 4).addIngredient(block).addCriterion("has_log_pile", this.hasItem(block)).build(consumer, Constants.MOD_ID + ":" + ingredient.asItem().getRegistryName().getPath() + "_from_" + block.getRegistryName().getPath());
                 });
 
         Stream.of(WoodenBlackBedBlocks.class, WoodenBlueBedBlocks.class, WoodenBrownBedBlocks.class, WoodenCyanBedBlocks.class, WoodenGrayBedBlocks.class, WoodenGreenBedBlocks.class, WoodenLightBlueBedBlocks.class, WoodenLightGrayBedBlocks.class, WoodenLimeBedBlocks.class, WoodenMagentaBedBlocks.class, WoodenOrangeBedBlocks.class, WoodenPinkBedBlocks.class, WoodenPurpleBedBlocks.class, WoodenRedBedBlocks.class, WoodenWhiteBedBlocks.class, WoodenYellowBedBlocks.class)
@@ -189,7 +179,9 @@ public class ILikeWoodRecipeProvider extends RecipeProvider {
         Stream.of(WoodenPanelsSlabBlocks.ACACIA, WoodenPanelsSlabBlocks.BIRCH, WoodenPanelsSlabBlocks.DARK_OAK, WoodenPanelsSlabBlocks.JUNGLE, WoodenPanelsSlabBlocks.OAK, WoodenPanelsSlabBlocks.SPRUCE)
                 .forEach(block -> {
                     final IItemProvider ingredient = getIngredient(block.getWoodType().getName().toUpperCase(), WoodenPanelsBlocks.class);
+                    final IItemProvider planks = getIngredient(block.getWoodType().getName().toUpperCase() + "_PLANKS", Blocks.class);
                     ShapedRecipeBuilder.shapedRecipe(block, 6).key('#', ingredient).patternLine("###").addCriterion("has_panels", this.hasItem(ingredient)).build(consumer);
+                    ShapedRecipeBuilder.shapedRecipe(planks, 1).key('S', block).patternLine("S").patternLine("S").addCriterion("has_panels_slab", this.hasItem(block)).build(consumer, Constants.MOD_ID + ":" + planks.asItem().getRegistryName().getPath() + "_from_" + block.getRegistryName().getPath());
                 });
 
         Stream.of(WoodenStickItems.ACACIA, WoodenStickItems.BIRCH, WoodenStickItems.DARK_OAK, WoodenStickItems.JUNGLE, WoodenStickItems.OAK, WoodenStickItems.SPRUCE)
