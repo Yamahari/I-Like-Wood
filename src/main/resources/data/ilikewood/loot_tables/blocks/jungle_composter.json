@@ -2,36 +2,17 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "jungle_composter0",
-      "rolls": 1.0,
+      "name": "jungle_composter",
+      "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:explosion_decay"
-            }
-          ],
           "name": "ilikewood:jungle_composter"
-        }
-      ]
-    },
-    {
-      "name": "jungle_composter1",
-      "rolls": 1.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:bone_meal"
         }
       ],
       "conditions": [
         {
-          "condition": "minecraft:block_state_property",
-          "block": "ilikewood:jungle_composter",
-          "properties": {
-            "level": "8"
-          }
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }

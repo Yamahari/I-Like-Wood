@@ -2,36 +2,17 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "spruce_composter0",
-      "rolls": 1.0,
+      "name": "spruce_composter",
+      "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:explosion_decay"
-            }
-          ],
           "name": "ilikewood:spruce_composter"
-        }
-      ]
-    },
-    {
-      "name": "spruce_composter1",
-      "rolls": 1.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:bone_meal"
         }
       ],
       "conditions": [
         {
-          "condition": "minecraft:block_state_property",
-          "block": "ilikewood:spruce_composter",
-          "properties": {
-            "level": "8"
-          }
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }

@@ -6,8 +6,8 @@
       "rolls": 1,
       "entries": [
         {
-          "name": "ilikewood:spruce_panels_stairs",
-          "type": "minecraft:item"
+          "type": "minecraft:item",
+          "name": "ilikewood:spruce_panels_stairs"
         }
       ],
       "conditions": [

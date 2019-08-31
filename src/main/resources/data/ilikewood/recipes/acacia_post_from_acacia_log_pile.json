@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ilikewood:acacia_log_pile"
+    }
+  ],
+  "result": {
+    "item": "ilikewood:acacia_post",
+    "count": 4
+  }
+}

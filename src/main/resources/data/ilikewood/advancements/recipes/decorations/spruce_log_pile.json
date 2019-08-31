@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "ilikewood:spruce_log_pile"
+    ]
+  },
+  "criteria": {
+    "has_post": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "ilikewood:spruce_post"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "ilikewood:spruce_log_pile"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_post",
+      "has_the_recipe"
+    ]
+  ]
+}

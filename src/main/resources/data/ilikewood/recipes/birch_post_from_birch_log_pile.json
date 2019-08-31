@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ilikewood:birch_log_pile"
+    }
+  ],
+  "result": {
+    "item": "ilikewood:birch_post",
+    "count": 4
+  }
+}

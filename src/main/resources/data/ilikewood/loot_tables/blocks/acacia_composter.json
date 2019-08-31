@@ -2,36 +2,17 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "acacia_composter0",
-      "rolls": 1.0,
+      "name": "acacia_composter",
+      "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:explosion_decay"
-            }
-          ],
           "name": "ilikewood:acacia_composter"
-        }
-      ]
-    },
-    {
-      "name": "acacia_composter1",
-      "rolls": 1.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:bone_meal"
         }
       ],
       "conditions": [
         {
-          "condition": "minecraft:block_state_property",
-          "block": "ilikewood:acacia_composter",
-          "properties": {
-            "level": "8"
-          }
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }

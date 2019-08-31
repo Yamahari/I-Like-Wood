@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ilikewood:jungle_log_pile"
+    }
+  ],
+  "result": {
+    "item": "ilikewood:jungle_post",
+    "count": 4
+  }
+}

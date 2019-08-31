@@ -2,36 +2,17 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "birch_composter0",
-      "rolls": 1.0,
+      "name": "birch_composter",
+      "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:explosion_decay"
-            }
-          ],
           "name": "ilikewood:birch_composter"
-        }
-      ]
-    },
-    {
-      "name": "birch_composter1",
-      "rolls": 1.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:bone_meal"
         }
       ],
       "conditions": [
         {
-          "condition": "minecraft:block_state_property",
-          "block": "ilikewood:birch_composter",
-          "properties": {
-            "level": "8"
-          }
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }

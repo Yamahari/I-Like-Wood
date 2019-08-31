@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "ilikewood:oak_post_from_oak_log_pile"
+    ]
+  },
+  "criteria": {
+    "has_log_pile": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "ilikewood:oak_log_pile"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "ilikewood:oak_post_from_oak_log_pile"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_log_pile",
+      "has_the_recipe"
+    ]
+  ]
+}
