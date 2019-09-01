@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.14.4-1.1.2.0'
+version = '1.14.4-1.1.2.1'
 group = 'yamahari.ilikewood' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'ilikewood'
 
@@ -134,7 +134,7 @@ jar {
         attributes([
             "Specification-Title": "ilikewood",
             "Specification-Vendor": "yamahari",
-            "Specification-Version": "1.14.4-1.1.2.0", // We are version 1 of ourselves
+            "Specification-Version": "1.14.4-1.1.2.1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"yamahari",
