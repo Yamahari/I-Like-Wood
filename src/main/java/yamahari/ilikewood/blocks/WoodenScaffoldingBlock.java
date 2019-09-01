@@ -1,12 +1,14 @@
 package yamahari.ilikewood.blocks;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.IWaterLoggable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
@@ -14,6 +16,7 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.EntitySelectionContext;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -22,7 +25,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import yamahari.ilikewood.items.WoodenScaffoldingItem;
-import yamahari.ilikewood.tags.WoodenItemTags;
 import yamahari.ilikewood.util.WoodType;
 import yamahari.ilikewood.util.WoodenObjectType;
 
@@ -41,19 +43,17 @@ public class WoodenScaffoldingBlock extends WoodenBlock implements IWaterLoggabl
         DISTANCE = BlockStateProperties.DISTANCE_0_7;
         WATERLOGGED = BlockStateProperties.WATERLOGGED;
         BOTTOM = BlockStateProperties.BOTTOM;
-        VoxelShape lvt_0_1_ = Block.makeCuboidShape(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-        VoxelShape lvt_1_1_ = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 2.0D);
-        VoxelShape lvt_2_1_ = Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D);
-        VoxelShape lvt_3_1_ = Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 2.0D, 16.0D, 16.0D);
-        VoxelShape lvt_4_1_ = Block.makeCuboidShape(14.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D);
-        STABLE_SHAPE = VoxelShapes.or(lvt_0_1_, lvt_1_1_, lvt_2_1_, lvt_3_1_, lvt_4_1_);
-        VoxelShape lvt_5_1_ = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 2.0D, 16.0D);
-        VoxelShape lvt_6_1_ = Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
-        VoxelShape lvt_7_1_ = Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 2.0D, 16.0D);
-        VoxelShape lvt_8_1_ = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 2.0D);
-        UNSTABLE_SHAPE = VoxelShapes.or(field_220123_f, STABLE_SHAPE, lvt_6_1_, lvt_5_1_, lvt_8_1_, lvt_7_1_);
+        STABLE_SHAPE = VoxelShapes.or(Block.makeCuboidShape(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+                Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 2.0D),
+                Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
+                Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 2.0D, 16.0D, 16.0D),
+                Block.makeCuboidShape(14.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D));
+        UNSTABLE_SHAPE = VoxelShapes.or(field_220123_f, STABLE_SHAPE,
+                Block.makeCuboidShape(14.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
+                Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 2.0D, 2.0D, 16.0D),
+                Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 2.0D),
+                Block.makeCuboidShape(0.0D, 0.0D, 14.0D, 16.0D, 2.0D, 16.0D));
     }
-
 
     public WoodenScaffoldingBlock(WoodType woodType) {
         super(woodType, Block.Properties.create(Material.WOOD).sound(SoundType.SCAFFOLDING).doesNotBlockMovement().variableOpacity());
@@ -72,7 +72,7 @@ public class WoodenScaffoldingBlock extends WoodenBlock implements IWaterLoggabl
         }
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             BlockState blockState1 = blockReaderIn.getBlockState(mutableBlockPos.setPos(blockPosIn).move(direction));
-            if (blockState1.getBlock() == Blocks.SCAFFOLDING) {
+            if (blockState1.getBlock() instanceof WoodenScaffoldingBlock) {
                 distance = Math.min(distance, blockState1.get(DISTANCE) + 1);
                 if (distance == 1) {
                     break;
@@ -89,13 +89,7 @@ public class WoodenScaffoldingBlock extends WoodenBlock implements IWaterLoggabl
 
     @Override
     public VoxelShape getShape(BlockState blockStateIn, IBlockReader blockReaderIn, BlockPos blockPosIn, ISelectionContext selectionContextIn) {
-        boolean flag = false;
-        for (Item item : WoodenItemTags.SCAFFOLDINGS.getAllElements()) {
-            if (selectionContextIn.hasItem(item)) {
-                flag = true;
-                break;
-            }
-        }
+        boolean flag = selectionContextIn instanceof EntitySelectionContext && ((EntitySelectionContext) selectionContextIn).item instanceof WoodenScaffoldingItem;
         return flag ? VoxelShapes.fullCube() : blockStateIn.get(BOTTOM) ? UNSTABLE_SHAPE : STABLE_SHAPE;
     }
 
